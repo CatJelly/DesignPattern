@@ -1,20 +1,26 @@
 package week2;
 
-import javax.xml.crypto.Data;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Logger {
+public class Logger_Synchronized {
     private final String LOGFILE = "log.txt";
     private PrintWriter writer;
-    public Logger() {
+    private static Logger_Synchronized instance;
+    private Logger_Synchronized() {
         try {
             FileWriter fw = new FileWriter(LOGFILE);
             writer = new PrintWriter(fw, true);
         } catch(IOException e) {}
+    }
+
+    public synchronized static Logger_Synchronized getInstance() {
+        if(instance == null)
+            instance = new Logger_Synchronized();
+        return instance;
     }
     public void log(String message) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
